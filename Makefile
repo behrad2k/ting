@@ -1,14 +1,22 @@
-CFLAGS = -Iinclude -march=raptorlake -mavx2 -mavx -msse4 -O0 -ftree-vectorize $(shell pkg-config sdl3 --cflags) #-O0 is smaller
+TARGET = prog
 CC = gcc
-SRC = $(wildcard *.c)
-OBJ = $(SRC:.c=.o)
+CFLAGS = -g -Wall -Iinclude
 
-all: out
+.PHONY: default all clean
 
-out: $(OBJ)
-	$(CC) $< -o $@ -lSDL3
+default: $(TARGET)
+all: default
 
-$(OBJ): $(SRC)
-	$(CC) $< -c $(CFLAGS) -o $@
+OBJECTS = $(patsubst %.c, %.o, $(wildcard *.c))
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PRECIOUS: $(TARGET) $(OBJECTS)
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(OBJECTS) -Wall -o $@
+
 clean:
-	rm -f $(OBJ)
+	-rm -f *.o
+	-rm -f $(TARGET)
