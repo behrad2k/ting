@@ -1,22 +1,18 @@
-TARGET = prog
-CC = gcc
-CFLAGS = -g -Wall -Iinclude
+CC := gcc
+CFLAGS := -Wall -O2 -Iinclude
+SRCS := $(wildcard *.c) $(wildcard */*.c)
+OBJS := $(SRCS:.c=.o)
+EXEC := ting
 
-.PHONY: default all clean
+all: $(EXEC)
 
-default: $(TARGET)
-all: default
-
-OBJECTS = $(patsubst %.c, %.o, $(wildcard *.c))
+$(EXEC): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-.PRECIOUS: $(TARGET) $(OBJECTS)
-
-$(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -Wall -o $@
-
 clean:
-	-rm -f *.o
-	-rm -f $(TARGET)
+	rm -f $(OBJS) $(EXEC)
+
+.PHONY: all clean
