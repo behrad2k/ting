@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[]) {
 	int opt;
-	int bitness;
+	int bitness = 64;
 	char *filename = NULL;
 	char *arch_arg = "x86";
 	FILE *a = NULL;
@@ -63,7 +63,6 @@ int main(int argc, char *argv[]) {
 	}
 	
 	header h = getheader(a);
-	printf("%d\n", h.endian);
 
 	printf("full arch: %s\n", getarch(h.bitness == 2 || bitness == 64, arch_arg, (strcmp(arch_arg, "aarch") != 0)));
 
