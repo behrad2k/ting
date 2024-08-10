@@ -63,9 +63,9 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	
-	ElfW(Ehdr) h = read_elf64_header(a);
-	proghdr hdrs[128];
-	gethdrs(h.e_ident[EI_CLASS] == 2, a, h, hdrs);
+	Elf64_Ehdr h = read_elf64_header(a);
+	Elf64_Phdr hdrs[128];
+	gethdrs(a, h, hdrs);
 
 	printf("full arch: %s\n", getarch(h.e_ident[EI_CLASS] == 2 || bitness == 64, arch_arg, (strcmp(arch_arg, "aarch") != 0)));
 

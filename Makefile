@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -Wall -O2 -Iinclude
+CFLAGS := -Wall -O0 -Iinclude -ggdb3
 SRCS := $(wildcard *.c) $(wildcard */*.c)
 OBJS := $(SRCS:.c=.o)
 EXEC := ting
