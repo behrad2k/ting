@@ -43,4 +43,4 @@ typedef struct proghdr {
 } proghdr;
 
 proghdr universallize_proghdr(bool bitness, proghdr_32 _32, proghdr_64 _64);
-void gethdrs(bool bitness, FILE *file, header _header, proghdr out[]);
+void gethdrs(bool bitness, FILE *file, ElfW(Ehdr) header, proghdr out[]);

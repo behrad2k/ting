@@ -26,24 +26,26 @@ proghdr universallize_proghdr(bool bitness, proghdr_32 _32, proghdr_64 _64) {
 	return proghdr_; // this is also bad
 }
 
-void gethdrs(bool bitness, FILE *file, header _header, proghdr out[]) {
-	uint16_t phnum = _header.phnum;
+void gethdrs(bool bitness, FILE *file, ElfW(Ehdr) header, proghdr out[]) {
+	uint16_t phnum = header.e_phnum;
 	if (bitness) {
 		proghdr_32 unusable;
-		uint64_t phoff = _header.phoff_64;
+		uint64_t phoff = header.e_phoff;
 		proghdr_64 cur;
 		fseeko(file, phoff, SEEK_SET);
 		for (uint16_t i = 0; i <= phnum; i++) {
+			printf("loaded proghdr %d\n out of %d\n", i, phnum);
 			fread(&cur, sizeof(cur), 1, file);
 			fseek(file, sizeof(cur), SEEK_CUR);
 			out[i] = universallize_proghdr(bitness, unusable, cur);
 		}
 	} else {
 		proghdr_64 unusable;
-		uint32_t phoff = _header.phoff;
+		uint32_t phoff = header.e_phoff;
 		proghdr_32 cur;
 		fseek(file, phoff, SEEK_SET);
 		for (uint16_t i = 0; i <= phnum; i++) {
+			printf("loaded proghdr %d\n", i);
 			fread(&cur, sizeof(cur), 1, file);
 			fseek(file, sizeof(cur), SEEK_CUR);
 			out[i] = universallize_proghdr(bitness, cur, unusable);
